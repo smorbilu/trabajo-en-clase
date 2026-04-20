@@ -1,0 +1,29 @@
+<div class="dashboard-page">
+  <header class="topbar">
+    <div class="brand">
+      <span>Panel Principal</span>
+    </div>
+
+    <button class="logout-btn" type="button" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <span>Cerrar sesión</span>
+    </button>
+  </header>
+
+  <section class="cards-grid">
+    <div
+      class="module-card"
+      *ngFor="let opcion of opciones"
+      [ngClass]="opcion.color"
+      (click)="ir(opcion)"
+    >
+      <div class="module-icon">
+        <mat-icon>{{ opcion.icono }}</mat-icon>
+      </div>
+
+      <h2>{{ opcion.titulo }}</h2>
+      <p>{{ opcion.descripcion }}</p>
+      <span class="module-link">Abrir módulo</span>
+    </div>
+  </section>
+</div>

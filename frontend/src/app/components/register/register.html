@@ -1,0 +1,107 @@
+<div class="register-page">
+  <div class="register-card">
+    <div class="register-icon">
+      <mat-icon>person_add</mat-icon>
+    </div>
+
+    <h1>Crear cuenta</h1>
+    <p>Completa tus datos para registrarte en el sistema</p>
+
+    <div class="register-divider"></div>
+
+    <form [formGroup]="registroForm" (ngSubmit)="onSubmit()" class="register-form">
+      <div class="form-grid">
+        <mat-form-field appearance="outline" class="custom-field">
+          <mat-label>Nombre</mat-label>
+          <mat-icon matPrefix>badge</mat-icon>
+          <input matInput formControlName="nombre" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="custom-field">
+          <mat-label>Apellido</mat-label>
+          <mat-icon matPrefix>badge</mat-icon>
+          <input matInput formControlName="apellido" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="custom-field">
+          <mat-label>Usuario</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <input matInput formControlName="usuario" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="custom-field">
+          <mat-label>Correo electrónico</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <input matInput type="email" formControlName="correo" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="custom-field">
+          <mat-label>Contraseña</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input matInput type="password" formControlName="password" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="custom-field">
+          <mat-label>Confirmar contraseña</mat-label>
+          <mat-icon matPrefix>lock_reset</mat-icon>
+          <input matInput type="password" formControlName="confirmarPassword" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="custom-field">
+          <mat-label>Dirección</mat-label>
+          <mat-icon matPrefix>home</mat-icon>
+          <input matInput formControlName="direccion" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="custom-field">
+          <mat-label>Teléfono</mat-label>
+          <mat-icon matPrefix>phone</mat-icon>
+          <input matInput formControlName="telefono" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="custom-field">
+          <mat-label>Biografía</mat-label>
+          <mat-icon matPrefix>description</mat-icon>
+          <input matInput formControlName="bio" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="custom-field">
+          <mat-label>Fecha de cumpleaños</mat-label>
+          <mat-icon matPrefix>calendar_month</mat-icon>
+          <input matInput type="date" formControlName="fecha_cumpleanios" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="custom-field">
+          <mat-label>Género</mat-label>
+          <mat-icon matPrefix>wc</mat-icon>
+          <input matInput formControlName="genero" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="custom-field foto-field">
+          <mat-label>Fotografía en base64</mat-label>
+          <mat-icon matPrefix>image</mat-icon>
+          <textarea
+            matInput
+            rows="5"
+            formControlName="foto"
+            (input)="actualizarPreviewFoto()"
+          ></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="preview-container" *ngIf="previewFoto">
+        <img [src]="previewFoto" alt="Vista previa" class="preview-image" />
+      </div>
+
+      <div class="actions">
+        <button mat-flat-button class="register-btn" type="submit">
+          Registrarme
+        </button>
+
+        <button mat-stroked-button class="back-btn" routerLink="/login" type="button">
+          ¿Ya tienes una cuenta? Inicia sesión
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

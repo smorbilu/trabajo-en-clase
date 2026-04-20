@@ -1,0 +1,63 @@
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-icon">
+      <mat-icon>vpn_key</mat-icon>
+    </div>
+
+    <h1>Bienvenido</h1>
+    <p>Ingresa tus credenciales para acceder a tu cuenta</p>
+
+    <div class="login-divider"></div>
+
+    <form class="login-form" (ngSubmit)="login()">
+      <mat-form-field appearance="outline" class="full-width custom-field">
+        <mat-label>Usuario*</mat-label>
+        <mat-icon matPrefix>person</mat-icon>
+        <input
+          matInput
+          [(ngModel)]="username"
+          name="username"
+          autocomplete="username"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width custom-field">
+        <mat-label>Contraseña*</mat-label>
+        <mat-icon matPrefix>lock</mat-icon>
+        <input
+          matInput
+          [type]="ocultarPassword ? 'password' : 'text'"
+          [(ngModel)]="password"
+          name="password"
+          autocomplete="current-password"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="ocultarPassword = !ocultarPassword"
+        >
+          <mat-icon>{{ ocultarPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <button
+        mat-flat-button
+        class="login-btn full-width"
+        type="submit"
+        [disabled]="cargando"
+      >
+        {{ cargando ? 'Ingresando...' : 'Iniciar sesión' }}
+      </button>
+
+      <button
+        mat-stroked-button
+        class="register-btn full-width"
+        routerLink="/register"
+        type="button"
+      >
+        Crear una cuenta
+      </button>
+    </form>
+  </div>
+</div>

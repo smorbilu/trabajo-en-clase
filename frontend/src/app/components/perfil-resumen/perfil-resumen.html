@@ -1,0 +1,100 @@
+<div class="profile-page">
+  <mat-toolbar class="top-toolbar">
+    <div class="toolbar-left">
+      <button mat-icon-button [routerLink]="desdeDashboard ? '/dashboard' : '/login'">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+
+      <div class="toolbar-title-group">
+        <span class="toolbar-title">Resumen del perfil</span>
+      </div>
+    </div>
+  </mat-toolbar>
+
+  <div class="page-content">
+    <mat-card class="profile-card">
+      <mat-card-content>
+        <div class="profile-header">
+          <div class="photo-block" *ngIf="usuario?.foto; else iconoDefault">
+            <img [src]="obtenerFoto()" alt="Foto de perfil" class="profile-photo" />
+          </div>
+
+          <ng-template #iconoDefault>
+            <div class="photo-block default-photo">
+              <mat-icon>person</mat-icon>
+            </div>
+          </ng-template>
+
+          <div class="profile-title-area">
+            <h1>Mi perfil</h1>
+            <p>Información general del usuario</p>
+          </div>
+        </div>
+
+        <div class="profile-grid" *ngIf="usuario; else sinUsuario">
+          <div class="info-card">
+            <span class="label">ID</span>
+            <span class="value">{{ usuario.id }}</span>
+          </div>
+
+          <div class="info-card">
+            <span class="label">Nombre</span>
+            <span class="value">{{ usuario.nombre }}</span>
+          </div>
+
+          <div class="info-card">
+            <span class="label">Usuario</span>
+            <span class="value">{{ usuario.usuario }}</span>
+          </div>
+
+          <div class="info-card">
+            <span class="label">Correo</span>
+            <span class="value">{{ usuario.email }}</span>
+          </div>
+
+          <div class="info-card" *ngIf="usuario?.direccion">
+            <span class="label">Dirección</span>
+            <span class="value">{{ usuario.direccion }}</span>
+          </div>
+
+          <div class="info-card" *ngIf="usuario?.telefono">
+            <span class="label">Teléfono</span>
+            <span class="value">{{ usuario.telefono }}</span>
+          </div>
+
+          <div class="info-card full-row" *ngIf="usuario?.bio">
+            <span class="label">Biografía</span>
+            <span class="value">{{ usuario.bio }}</span>
+          </div>
+
+          <div class="info-card" *ngIf="usuario?.fecha_cumpleanios">
+            <span class="label">Fecha de Nacimiento</span>
+            <span class="value">{{ usuario.fecha_cumpleanios }}</span>
+          </div>
+
+          <div class="info-card" *ngIf="usuario?.genero">
+            <span class="label">Género</span>
+            <span class="value">{{ usuario.genero }}</span>
+          </div>
+        </div>
+
+        <ng-template #sinUsuario>
+          <div class="empty-state">
+            <mat-icon>info</mat-icon>
+            <span>No se encontró información del usuario.</span>
+          </div>
+        </ng-template>
+
+        <div class="profile-actions">
+          <button
+            mat-flat-button
+            class="primary-btn"
+            [routerLink]="desdeDashboard ? '/dashboard' : '/login'"
+          >
+            {{ desdeDashboard ? 'Volver al Panel Principal' : 'Continuar' }}
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,233 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.profile-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.10), transparent 30%),
+    radial-gradient(circle at top center, rgba(255, 255, 255, 0.05), transparent 25%),
+    linear-gradient(135deg, #182744 0%, #243858 45%, #344763 100%);
+  padding-bottom: 40px;
+}
+
+.top-toolbar,
+.mat-toolbar.top-toolbar,
+mat-toolbar.top-toolbar {
+  height: auto;
+  min-height: 84px;
+  padding: 14px 26px;
+  background: linear-gradient(135deg, #142447 0%, #1a2f5f 100%) !important;
+  color: #fff !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.toolbar-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toolbar-title {
+  font-size: 1.6rem;
+  font-weight: 900;
+}
+
+.toolbar-subtitle {
+  font-size: 0.95rem;
+  color: #d5deef !important;
+}
+
+.page-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px 24px 0;
+}
+
+.profile-card {
+  background: linear-gradient(180deg, #eefbff 0%, #dff4ff 100%) !important;
+  border-radius: 32px !important;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  box-shadow: 0 22px 42px rgba(0, 0, 0, 0.16) !important;
+  overflow: hidden;
+}
+
+.profile-card mat-card-content {
+  padding: 32px !important;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 30px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #d8e2f1;
+}
+
+.photo-block {
+  width: 150px;
+  height: 150px;
+  border-radius: 30px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #2d57dc 0%, #11275f 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 16px 30px rgba(17, 39, 95, 0.22);
+}
+
+.profile-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.default-photo mat-icon {
+  color: #fff;
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+}
+
+.profile-title-area h1 {
+  margin: 0;
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: #13295b;
+  line-height: 1.05;
+}
+
+.profile-title-area p {
+  margin: 10px 0 0;
+  color: #607292;
+  font-size: 1.05rem;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.info-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 18px 16px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #edf8ff 0%, #cfefff 100%);
+  border: 1px solid #ffffff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.full-row {
+  grid-column: 1 / -1;
+}
+
+.label {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #4e648d;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #13295b;
+  word-break: break-word;
+}
+
+.empty-state {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: #edf3ff;
+  color: #1c3363;
+  font-weight: 700;
+}
+
+.profile-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.primary-btn {
+  min-width: 260px;
+  min-height: 52px;
+  border-radius: 16px !important;
+  font-weight: 800;
+  color: #fff !important;
+  background: linear-gradient(90deg, #2d57dc 0%, #11275f 100%) !important;
+  box-shadow: 0 12px 22px rgba(26, 56, 138, 0.18);
+}
+
+::ng-deep .mat-toolbar.top-toolbar {
+  background: linear-gradient(135deg, #142447 0%, #1a2f5f 100%) !important;
+  color: #fff !important;
+}
+
+@media (max-width: 780px) {
+  .top-toolbar,
+  .mat-toolbar.top-toolbar,
+  mat-toolbar.top-toolbar {
+    padding: 12px 16px;
+  }
+
+  .toolbar-title {
+    font-size: 1.25rem;
+  }
+
+  .toolbar-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .page-content {
+    padding: 18px 14px 0;
+  }
+
+  .profile-card mat-card-content {
+    padding: 22px !important;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .photo-block {
+    width: 130px;
+    height: 130px;
+    border-radius: 26px;
+  }
+
+  .profile-title-area h1 {
+    font-size: 2rem;
+  }
+
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full-row {
+    grid-column: auto;
+  }
+
+  .primary-btn {
+    width: 100%;
+  }
+}
