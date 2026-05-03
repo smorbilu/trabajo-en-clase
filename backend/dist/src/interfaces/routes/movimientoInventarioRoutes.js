@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const MovimientoInventarioController_1 = require("../controllers/MovimientoInventarioController");
+const router = (0, express_1.Router)();
+router.get("/", MovimientoInventarioController_1.MovimientoInventarioController.getAll);
+router.post("/", MovimientoInventarioController_1.MovimientoInventarioController.create);
+router.put("/:id", MovimientoInventarioController_1.MovimientoInventarioController.update);
+router.delete("/:id", MovimientoInventarioController_1.MovimientoInventarioController.delete);
+exports.default = router;

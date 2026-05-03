@@ -8,6 +8,7 @@ import { InventarioComponent } from './components/inventario/inventario';
 import { CategoriasComponent } from './components/categorias/categorias';
 import { ProveedoresComponent } from './components/proveedor/proveedor';
 import { MovimientosInventarioComponent } from './components/movimiento-inventario/movimiento-inventario';
+import { MyFriendsComponent } from './components/my-friends/my-friends';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -18,5 +19,6 @@ export const routes: Routes = [
   { path: 'inventario', component: InventarioComponent, canActivate: [authGuard] },
   { path: 'categorias', component: CategoriasComponent, canActivate: [authGuard] },
   { path: 'proveedores', component: ProveedoresComponent, canActivate: [authGuard] },
-  { path: 'movimientos-inventario', component: MovimientosInventarioComponent, canActivate: [authGuard] }
+  { path: 'movimientos-inventario', component: MovimientosInventarioComponent, canActivate: [authGuard] },
+  { path: 'my-friends', component: MyFriendsComponent, canActivate: [authGuard] }
 ];

@@ -27,7 +27,8 @@ export class DashboardComponent {
     { titulo: 'Perfil', descripcion: 'Mi información', icono: 'account_circle', ruta: '/perfil_resumen', query: { origen: 'dashboard' }, color: 'perfil' },
     { titulo: 'Categorías', descripcion: 'Gestiona categorías', icono: 'sell', ruta: '/categorias', color: 'categorias' },
     { titulo: 'Proveedores', descripcion: 'Gestiona proveedores', icono: 'local_shipping', ruta: '/proveedores', color: 'proveedores' },
-    { titulo: 'Movimientos', descripcion: 'Registra entradas y salidas', icono: 'receipt_long', ruta: '/movimientos-inventario', color: 'movimientos' }
+    { titulo: 'Movimientos', descripcion: 'Registra entradas y salidas', icono: 'receipt_long', ruta: '/movimientos-inventario', color: 'movimientos' },
+    { titulo: 'My Friends', descripcion: 'Eventos en tiempo real desde PostgreSQL', icono: 'group', ruta: '/my-friends', color: 'myfriends' }
   ];
 
   constructor(

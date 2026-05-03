@@ -6,6 +6,12 @@ export class ProductoController {
   static async getAll(_req: Request, res: Response): Promise<void> {
     try {
       const productos = await ProductoModel.findAll({
+        include: [
+          {
+            model: CategoriaModel,
+            as: "categoria",
+          },
+        ],
         order: [["id", "ASC"]],
       });
 
@@ -35,6 +41,11 @@ export class ProductoController {
         return;
       }
 
+      if (!categoria_id) {
+        res.status(400).json({ mensaje: "La categoría es obligatoria" });
+        return;
+      }
+
       const categoria = await CategoriaModel.findByPk(Number(categoria_id));
 
       if (!categoria) {
@@ -43,8 +54,8 @@ export class ProductoController {
       }
 
       const nuevoProducto = await ProductoModel.create({
-        nombre,
-        descripcion,
+        nombre: String(nombre).trim(),
+        descripcion: descripcion || null,
         precio: Number(precio),
         stock: Number(stock),
         imagen: imagen || null,
@@ -70,6 +81,26 @@ export class ProductoController {
         return;
       }
 
+      if (!nombre || !nombre.trim()) {
+        res.status(400).json({ mensaje: "El nombre es obligatorio" });
+        return;
+      }
+
+      if (precio === undefined || precio === null || Number(precio) < 0) {
+        res.status(400).json({ mensaje: "El precio es obligatorio y debe ser válido" });
+        return;
+      }
+
+      if (stock === undefined || stock === null || Number(stock) < 0) {
+        res.status(400).json({ mensaje: "El stock es obligatorio y debe ser válido" });
+        return;
+      }
+
+      if (!categoria_id) {
+        res.status(400).json({ mensaje: "La categoría es obligatoria" });
+        return;
+      }
+
       const categoria = await CategoriaModel.findByPk(Number(categoria_id));
 
       if (!categoria) {
@@ -78,8 +109,8 @@ export class ProductoController {
       }
 
       await producto.update({
-        nombre,
-        descripcion,
+        nombre: String(nombre).trim(),
+        descripcion: descripcion || null,
         precio: Number(precio),
         stock: Number(stock),
         imagen: imagen || null,

@@ -1,12 +1,17 @@
 import { Request, Response } from "express";
 import { MovimientoInventarioModel } from "../../infrastructure/models/MovimientoInventarioModel";
 import { ProductoModel } from "../../infrastructure/models/ProductoModel";
-import { sequelize } from "../../infrastructure/database/sequelize";
 
 export class MovimientoInventarioController {
   static async getAll(_req: Request, res: Response): Promise<void> {
     try {
       const movimientos = await MovimientoInventarioModel.findAll({
+        include: [
+          {
+            model: ProductoModel,
+            as: "producto",
+          },
+        ],
         order: [["id", "DESC"]],
       });
 
@@ -31,13 +36,20 @@ export class MovimientoInventarioController {
         return;
       }
 
-      if (Number(cantidad) <= 0) {
+      if (!cantidad || Number(cantidad) <= 0) {
         res.status(400).json({ mensaje: "La cantidad debe ser mayor que 0" });
         return;
       }
 
       if (!fecha) {
         res.status(400).json({ mensaje: "La fecha es obligatoria" });
+        return;
+      }
+
+      const tipo = String(tipo_movimiento).toLowerCase();
+
+      if (tipo !== "entrada" && tipo !== "salida") {
+        res.status(400).json({ mensaje: "Tipo de movimiento inválido" });
         return;
       }
 
@@ -48,15 +60,13 @@ export class MovimientoInventarioController {
         return;
       }
 
-      const movimiento = await MovimientoInventarioModel.create(
-        {
-          producto_id: Number(producto_id),
-          tipo_movimiento: String(tipo_movimiento).toLowerCase(),
-          cantidad: Number(cantidad),
-          fecha: String(fecha),
-          observacion: observacion || null,
-        } as any
-      );
+      const movimiento = await MovimientoInventarioModel.create({
+        producto_id: Number(producto_id),
+        tipo_movimiento: tipo,
+        cantidad: Number(cantidad),
+        fecha: String(fecha),
+        observacion: observacion || null,
+      } as any);
 
       res.status(201).json(movimiento);
     } catch (error) {
@@ -66,131 +76,61 @@ export class MovimientoInventarioController {
   }
 
   static async update(req: Request, res: Response): Promise<void> {
-    const transaction = await sequelize.transaction();
-
     try {
       const { id } = req.params;
       const { producto_id, tipo_movimiento, cantidad, fecha, observacion } = req.body;
 
+      const movimiento = await MovimientoInventarioModel.findByPk(Number(id));
+
+      if (!movimiento) {
+        res.status(404).json({ mensaje: "Movimiento no encontrado" });
+        return;
+      }
+
       if (!producto_id) {
-        await transaction.rollback();
         res.status(400).json({ mensaje: "El producto es obligatorio" });
         return;
       }
 
       if (!tipo_movimiento || !String(tipo_movimiento).trim()) {
-        await transaction.rollback();
         res.status(400).json({ mensaje: "El tipo de movimiento es obligatorio" });
         return;
       }
 
-      if (Number(cantidad) <= 0) {
-        await transaction.rollback();
+      if (!cantidad || Number(cantidad) <= 0) {
         res.status(400).json({ mensaje: "La cantidad debe ser mayor que 0" });
         return;
       }
 
       if (!fecha) {
-        await transaction.rollback();
         res.status(400).json({ mensaje: "La fecha es obligatoria" });
         return;
       }
 
-      const movimientoActual = await MovimientoInventarioModel.findByPk(Number(id), {
-        transaction,
-      });
+      const tipo = String(tipo_movimiento).toLowerCase();
 
-      if (!movimientoActual) {
-        await transaction.rollback();
-        res.status(404).json({ mensaje: "Movimiento no encontrado" });
-        return;
-      }
-
-      const productoAnterior = await ProductoModel.findByPk(Number(movimientoActual.get("producto_id")), {
-        transaction,
-      });
-
-      const productoNuevo = await ProductoModel.findByPk(Number(producto_id), {
-        transaction,
-      });
-
-      if (!productoAnterior || !productoNuevo) {
-        await transaction.rollback();
-        res.status(400).json({ mensaje: "Producto no encontrado" });
-        return;
-      }
-
-      const tipoAnterior = String(movimientoActual.get("tipo_movimiento")).toLowerCase();
-      const cantidadAnterior = Number(movimientoActual.get("cantidad"));
-
-      let stockProductoAnterior = Number(productoAnterior.get("stock"));
-      let stockProductoNuevo =
-        Number(productoNuevo.get("id")) === Number(productoAnterior.get("id"))
-          ? stockProductoAnterior
-          : Number(productoNuevo.get("stock"));
-
-      // Revertir el movimiento anterior
-      if (tipoAnterior === "entrada") {
-        stockProductoAnterior -= cantidadAnterior;
-      } else if (tipoAnterior === "salida") {
-        stockProductoAnterior += cantidadAnterior;
-      }
-
-      if (stockProductoAnterior < 0) {
-        await transaction.rollback();
-        res.status(400).json({ mensaje: "No se puede revertir el movimiento anterior" });
-        return;
-      }
-
-      // Si es el mismo producto, seguimos sobre el mismo stock ya revertido
-      if (Number(productoNuevo.get("id")) === Number(productoAnterior.get("id"))) {
-        stockProductoNuevo = stockProductoAnterior;
-      }
-
-      const tipoNuevo = String(tipo_movimiento).toLowerCase();
-      const cantidadNueva = Number(cantidad);
-
-      // Aplicar el nuevo movimiento
-      if (tipoNuevo === "entrada") {
-        stockProductoNuevo += cantidadNueva;
-      } else if (tipoNuevo === "salida") {
-        if (stockProductoNuevo < cantidadNueva) {
-          await transaction.rollback();
-          res.status(400).json({ mensaje: "Stock insuficiente para registrar la salida" });
-          return;
-        }
-        stockProductoNuevo -= cantidadNueva;
-      } else {
-        await transaction.rollback();
+      if (tipo !== "entrada" && tipo !== "salida") {
         res.status(400).json({ mensaje: "Tipo de movimiento inválido" });
         return;
       }
 
-      await productoAnterior.update(
-        { stock: stockProductoAnterior },
-        { transaction }
-      );
+      const producto = await ProductoModel.findByPk(Number(producto_id));
 
-      await productoNuevo.update(
-        { stock: stockProductoNuevo },
-        { transaction }
-      );
+      if (!producto) {
+        res.status(400).json({ mensaje: "El producto seleccionado no existe" });
+        return;
+      }
 
-      await movimientoActual.update(
-        {
-          producto_id: Number(producto_id),
-          tipo_movimiento: tipoNuevo,
-          cantidad: cantidadNueva,
-          fecha: String(fecha),
-          observacion: observacion || null,
-        },
-        { transaction }
-      );
+      await movimiento.update({
+        producto_id: Number(producto_id),
+        tipo_movimiento: tipo,
+        cantidad: Number(cantidad),
+        fecha: String(fecha),
+        observacion: observacion || null,
+      });
 
-      await transaction.commit();
-      res.status(200).json(movimientoActual);
+      res.status(200).json(movimiento);
     } catch (error) {
-      await transaction.rollback();
       console.error("Error al actualizar movimiento:", error);
       res.status(500).json({ mensaje: "Error al actualizar movimiento" });
     }
